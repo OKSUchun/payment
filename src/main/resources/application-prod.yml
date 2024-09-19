@@ -1,5 +1,6 @@
 spring:
   config:
+    import: env.properties
     activate:
       on-profile: prod
 
@@ -15,7 +16,4 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         boot:
           allow_jdbc_metadata_access: false # hibernate 자동 DatabaseMetaData 접근 비활성화
-logging:
-  level:
-    org.hibernate.sql: debug
-    org.hibernate.type: trace
+    open-in-view: false
