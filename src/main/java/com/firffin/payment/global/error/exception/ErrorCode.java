@@ -14,12 +14,12 @@ import static org.springframework.http.HttpStatus.*;
 public enum ErrorCode {
   SAMPLE_ERROR(BAD_REQUEST, "Sample Error Message");
 
-  /**
-   * 오류 HTTP 상태 코드.
-   */
-  private final HttpStatus status;
-  /**
-   * 오류 메시지.
-   */
-  private final String message;
+    /**
+     * 오류 HTTP 상태 코드.
+     */
+    private final HttpStatus status;
+    /**
+     * 오류 메시지.
+     */
+    private final String message;
 }
