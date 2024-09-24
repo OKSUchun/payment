@@ -3,7 +3,6 @@ package com.firffin.payment.member.service;
 import com.firffin.payment.global.error.exception.CustomException;
 import com.firffin.payment.global.error.exception.ErrorCode;
 import com.firffin.payment.global.security.PasswordEncoder;
-import com.firffin.payment.member.converter.SignUpDtoConverter;
 import com.firffin.payment.member.domain.Member;
 import com.firffin.payment.member.domain.MemberRole;
 import com.firffin.payment.member.domain.MemberStatus;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService implements MemberSignUpService {
 
     private final MemberRepository memberRepository;
-    private final SignUpDtoConverter signUpDtoConverter;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -57,14 +55,14 @@ public class MemberService implements MemberSignUpService {
         Member member = findInactiveChildUser(signUpRequest);
         // TODO: 자녀 회원의 부모가 존재하는지 확인합니다.
         member.updateChildMember(passwordEncoder.hashPassword(signUpRequest.getPassword()));
-        return signUpDtoConverter.convertUserToSignUpResponse(member);
+        return new SignUpResponseDto(member.getUsername(), member.getId());
     }
 
     private SignUpResponseDto handleParentSignUp(SignUpRequestDto signUpRequest) {
         validateSignUser(signUpRequest);
-        Member member = signUpDtoConverter.convertSignUpRequestToMember(signUpRequest);
+        Member member = Member.createParentMember(signUpRequest.getPhoneNumber(), signUpRequest.getUsername(), passwordEncoder.hashPassword(signUpRequest.getPassword()));
         memberRepository.save(member);
-        return signUpDtoConverter.convertUserToSignUpResponse(member);
+        return new SignUpResponseDto(member.getUsername(), member.getId());
     }
 
     private void validateSignUser(SignUpRequestDto signUpRequest) {
