@@ -37,7 +37,7 @@ public class CustomPasswordEncoder implements PasswordEncoder {
             return Base64.getEncoder().encodeToString(hashedBytes);
         } catch (NoSuchAlgorithmException e) {
             logger.error("해싱 알고리즘 확인이 어렵습니다: " + algorithm, e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(ErrorCode.SERVER_ERROR);
         }
     }
 }
